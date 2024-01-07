@@ -1,0 +1,80 @@
+LAMMPS (29 Sep 2021 - Update 2)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (src/comm.cpp:98)
+  using 1 OpenMP thread(s) per MPI task
+Reading data file ...
+  triclinic box = (0.0000000 0.0000000 0.0000000) to (22.326000 11.141200 13.778966) with tilt (0.0000000 -5.0260300 0.0000000)
+  8 by 8 by 8 MPI processor grid
+  reading atoms ...
+  304 atoms
+  reading velocities ...
+  304 velocities
+  read_data CPU = 0.031 seconds
+Replicating atoms ...
+  triclinic box = (0.0000000 0.0000000 0.0000000) to (1518.1680 111.41200 179.12656) with tilt (0.0000000 -65.338390 0.0000000)
+  32 by 4 by 4 MPI processor grid
+  bounding box image = (0 -1 -1) to (0 1 1)
+  bounding box extra memory = 0.03 MB
+  average # of replicas added to proc = 95.28 out of 8840 (1.08%)
+  2687360 atoms
+  replicate CPU = 0.023 seconds
+Neighbor list info ...
+  update every 20 steps, delay 0 steps, check no
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 11
+  ghost atom cutoff = 11
+  binsize = 5.5, bins = 288 21 33
+  2 neighbor lists, perpetual/occasional/extra = 2 0 0
+  (1) pair reax/c, perpetual
+      attributes: half, newton off, ghost
+      pair build: half/bin/newtoff/ghost
+      stencil: full/ghost/bin/3d
+      bin: standard
+  (2) fix qeq/reax, perpetual, copy from (1)
+      attributes: half, newton off, ghost
+      pair build: copy
+      stencil: none
+      bin: none
+Setting up Verlet run ...
+  Unit style    : real
+  Current step  : 0
+  Time step     : 0.1
+Per MPI rank memory allocation (min/avg/max) = 348.3 | 351.5 | 354.1 Mbytes
+Step Temp PotEng Press E_vdwl E_coul Volume 
+       0          300   -113.27833     439.0191   -111.57687   -1.7014647     30297848 
+      10    300.78201   -113.28049    761.41702   -111.57905   -1.7014335     30297848 
+      20    302.42588   -113.28524    1624.4711   -111.58392   -1.7013201     30297848 
+      30    302.56334   -113.28553    4223.4382   -111.58444    -1.701089     30297848 
+      40    300.61414   -113.27966    6341.4043    -111.5789   -1.7007601     30297848 
+      50    297.42325    -113.2701    6489.1227   -111.56971   -1.7003926     30297848 
+      60    294.73749   -113.26205    6280.5658   -111.56202   -1.7000215     30297848 
+      70    294.66443   -113.26179    6987.1654   -111.56214   -1.6996444     30297848 
+      80    297.77339   -113.27103    8422.9371   -111.57177   -1.6992663     30297848 
+      90    301.66043   -113.28261    9530.7114   -111.58368   -1.6989302     30297848 
+     100    302.54141   -113.28518     10502.83   -111.58649   -1.6986882     30297848 
+Loop time of 62.7388 on 512 procs for 100 steps with 2687360 atoms
+
+Performance: 0.014 ns/day, 1742.743 hours/ns, 1.594 timesteps/s
+96.9% CPU use with 512 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 29.241     | 31.676     | 34.866     |  18.2 | 50.49
+Neigh   | 0.48424    | 0.50767    | 0.55072    |   1.6 |  0.81
+Comm    | 0.73572    | 3.4195     | 6.0239     |  56.2 |  5.45
+Output  | 0.10377    | 0.15596    | 0.20009    |   5.2 |  0.25
+Modify  | 26.442     | 26.977     | 27.37      |   4.4 | 43.00
+Other   |            | 0.002128   |            |       |  0.00
+
+Nlocal:        5248.75 ave        5323 max        5175 min
+Histogram: 13 25 65 65 80 100 79 49 18 18
+Nghost:        15728.0 ave       15902 max       15592 min
+Histogram: 24 46 49 115 97 57 65 46 5 8
+Neighs:    1.67515e+06 ave 1.69993e+06 max 1.65264e+06 min
+Histogram: 18 30 66 77 80 99 70 34 19 19
+
+Total # of neighbors = 8.5767634e+08
+Ave neighs/atom = 319.15201
+Neighbor list builds = 5
+Dangerous builds not checked
+Total wall time: 0:01:04

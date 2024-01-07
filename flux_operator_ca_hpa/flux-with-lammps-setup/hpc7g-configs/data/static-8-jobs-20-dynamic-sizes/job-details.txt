@@ -1,0 +1,51 @@
+flux@flux-sample-0:~/examples/reaxff/HNS$ python3 run-experiments-dynamic-size.py --outdir /home/flux --workdir /opt/lammps/examples/reaxff/HNS --times 20 -N 8 --tasks 512 -in in.reaxc.hns -nocite
+         N: 8
+     times: 20
+ Job Index: 0
+     sleep: 10
+    outdir: /home/flux
+     tasks: 512
+   command: -in in.reaxc.hns -nocite
+   workdir: /opt/lammps/examples/reaxff/HNS
+   dry-run: False
+identifier: lammps
+flux mini submit -N 8 -n 512 --output /home/flux/lammps-0.log --error /home/flux/lammps-0.log -ompi=openmpi@5 -c 1 -o cpu-affinity=per-task -vvv lmp -v x 55 -v y 17 -v z 21 -in in.reaxc.hns -nocite
+Submit ƒ2h5YyHPM: 1 of 20
+flux mini submit -N 8 -n 512 --output /home/flux/lammps-1.log --error /home/flux/lammps-1.log -ompi=openmpi@5 -c 1 -o cpu-affinity=per-task -vvv lmp -v x 57 -v y 21 -v z 22 -in in.reaxc.hns -nocite
+Submit ƒ2h9VHNnT: 2 of 20
+flux mini submit -N 8 -n 512 --output /home/flux/lammps-2.log --error /home/flux/lammps-2.log -ompi=openmpi@5 -c 1 -o cpu-affinity=per-task -vvv lmp -v x 65 -v y 17 -v z 23 -in in.reaxc.hns -nocite
+Submit ƒ2hDW3S2b: 3 of 20
+flux mini submit -N 8 -n 512 --output /home/flux/lammps-3.log --error /home/flux/lammps-3.log -ompi=openmpi@5 -c 1 -o cpu-affinity=per-task -vvv lmp -v x 65 -v y 11 -v z 12 -in in.reaxc.hns -nocite
+Submit ƒ2hHQsY9M: 4 of 20
+flux mini submit -N 8 -n 512 --output /home/flux/lammps-4.log --error /home/flux/lammps-4.log -ompi=openmpi@5 -c 1 -o cpu-affinity=per-task -vvv lmp -v x 66 -v y 24 -v z 15 -in in.reaxc.hns -nocite
+Submit ƒ2hP7UmzF: 5 of 20
+flux mini submit -N 8 -n 512 --output /home/flux/lammps-5.log --error /home/flux/lammps-5.log -ompi=openmpi@5 -c 1 -o cpu-affinity=per-task -vvv lmp -v x 64 -v y 14 -v z 23 -in in.reaxc.hns -nocite
+Submit ƒ2hVKjmU3: 6 of 20
+flux mini submit -N 8 -n 512 --output /home/flux/lammps-6.log --error /home/flux/lammps-6.log -ompi=openmpi@5 -c 1 -o cpu-affinity=per-task -vvv lmp -v x 70 -v y 16 -v z 12 -in in.reaxc.hns -nocite
+Submit ƒ2ha6yTAX: 7 of 20
+flux mini submit -N 8 -n 512 --output /home/flux/lammps-7.log --error /home/flux/lammps-7.log -ompi=openmpi@5 -c 1 -o cpu-affinity=per-task -vvv lmp -v x 64 -v y 14 -v z 18 -in in.reaxc.hns -nocite
+Submit ƒ2heYwJCX: 8 of 20
+flux mini submit -N 8 -n 512 --output /home/flux/lammps-8.log --error /home/flux/lammps-8.log -ompi=openmpi@5 -c 1 -o cpu-affinity=per-task -vvv lmp -v x 58 -v y 24 -v z 16 -in in.reaxc.hns -nocite
+Submit ƒ2hnhsM6X: 9 of 20
+flux mini submit -N 8 -n 512 --output /home/flux/lammps-9.log --error /home/flux/lammps-9.log -ompi=openmpi@5 -c 1 -o cpu-affinity=per-task -vvv lmp -v x 67 -v y 19 -v z 12 -in in.reaxc.hns -nocite
+Submit ƒ2htCcggf: 10 of 20
+flux mini submit -N 8 -n 512 --output /home/flux/lammps-10.log --error /home/flux/lammps-10.log -ompi=openmpi@5 -c 1 -o cpu-affinity=per-task -vvv lmp -v x 67 -v y 15 -v z 16 -in in.reaxc.hns -nocite
+Submit ƒ2i3DxKAP: 11 of 20
+flux mini submit -N 8 -n 512 --output /home/flux/lammps-11.log --error /home/flux/lammps-11.log -ompi=openmpi@5 -c 1 -o cpu-affinity=per-task -vvv lmp -v x 68 -v y 10 -v z 13 -in in.reaxc.hns -nocite
+Submit ƒ2iCUdqBD: 12 of 20
+flux mini submit -N 8 -n 512 --output /home/flux/lammps-12.log --error /home/flux/lammps-12.log -ompi=openmpi@5 -c 1 -o cpu-affinity=per-task -vvv lmp -v x 63 -v y 17 -v z 21 -in in.reaxc.hns -nocite
+Submit ƒ2iM7jeRm: 13 of 20
+flux mini submit -N 8 -n 512 --output /home/flux/lammps-13.log --error /home/flux/lammps-13.log -ompi=openmpi@5 -c 1 -o cpu-affinity=per-task -vvv lmp -v x 58 -v y 17 -v z 15 -in in.reaxc.hns -nocite
+Submit ƒ2iWaH4hM: 14 of 20
+flux mini submit -N 8 -n 512 --output /home/flux/lammps-14.log --error /home/flux/lammps-14.log -ompi=openmpi@5 -c 1 -o cpu-affinity=per-task -vvv lmp -v x 68 -v y 20 -v z 18 -in in.reaxc.hns -nocite
+Submit ƒ2ifyrWQF: 15 of 20
+flux mini submit -N 8 -n 512 --output /home/flux/lammps-15.log --error /home/flux/lammps-15.log -ompi=openmpi@5 -c 1 -o cpu-affinity=per-task -vvv lmp -v x 58 -v y 10 -v z 20 -in in.reaxc.hns -nocite
+Submit ƒ2ipU4Pxj: 16 of 20
+flux mini submit -N 8 -n 512 --output /home/flux/lammps-16.log --error /home/flux/lammps-16.log -ompi=openmpi@5 -c 1 -o cpu-affinity=per-task -vvv lmp -v x 68 -v y 13 -v z 20 -in in.reaxc.hns -nocite
+Submit ƒ2ixykGoZ: 17 of 20
+flux mini submit -N 8 -n 512 --output /home/flux/lammps-17.log --error /home/flux/lammps-17.log -ompi=openmpi@5 -c 1 -o cpu-affinity=per-task -vvv lmp -v x 64 -v y 12 -v z 13 -in in.reaxc.hns -nocite
+Submit ƒ2j8BTpFh: 18 of 20
+flux mini submit -N 8 -n 512 --output /home/flux/lammps-18.log --error /home/flux/lammps-18.log -ompi=openmpi@5 -c 1 -o cpu-affinity=per-task -vvv lmp -v x 61 -v y 15 -v z 16 -in in.reaxc.hns -nocite
+Submit ƒ2jGchjFV: 19 of 20
+flux mini submit -N 8 -n 512 --output /home/flux/lammps-19.log --error /home/flux/lammps-19.log -ompi=openmpi@5 -c 1 -o cpu-affinity=per-task -vvv lmp -v x 71 -v y 17 -v z 11 -in in.reaxc.hns -nocite
+Submit ƒ2jRV9S39: 20 of 20
