@@ -1,7 +1,7 @@
 # Flux Operator Mini Cluster Setup
 
 ## Basic Minicluster setup
-This setup assumes you already created kubernetes cluster with at least 1/2 Nodes by following the direction [here](../README.md)
+This setup assumes you already created kubernetes cluster with at least 1/2 Nodes by following the direction [here](../README-kubescaler.md)
 
 Create the flux-operator namespace and install the operator:
 
