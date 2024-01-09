@@ -13,7 +13,7 @@ kubectl apply -f flux-with-lammps-setup/hpc7g-configs/flux-operator-arm.yaml
 Generate secrets for custom metrics
 ```bash
 cd ./scripts
-./certs.sh
+sh custom-metrics-setup/scripts/certs.sh
 ```
 Create secrets in kubernetes for custom metrics
 ```bash
@@ -24,7 +24,7 @@ kubectl get secret -n flux-operator
 
 ```console
 kubectl create namespace flux-operator
-kubectl apply -f minicluster-libfabric-custom-metrics.yaml
+kubectl apply -f custom-metrics-setup/minicluster-libfabric-custom-metrics.yaml
 ```
 
 This will copy configs / create directories for it
@@ -76,7 +76,7 @@ kubectl get --raw /apis/flux-framework.org/v1alpha1/namespaces/flux-operator/min
 
 Start the metrics api server
 ```bash
-$ flux-metrics-api start --port 8443 --ssl-certfile /etc/certs/tls.crt --ssl-keyfile /etc/certs/tls.key --namespace flux-operator --service-name custom-metrics-apiserver
+flux-metrics-api start --port 8443 --ssl-certfile /etc/certs/tls.crt --ssl-keyfile /etc/certs/tls.key --namespace flux-operator --service-name custom-metrics-apiserver
 ```
 
 Follow the instructions here for next step to complete the custom metrics server setup

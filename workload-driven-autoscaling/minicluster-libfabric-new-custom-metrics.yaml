@@ -6,8 +6,8 @@ metadata:
 spec:
 
   # Number of pods to create for MiniCluster
-  size: 2
-  maxSize: 16
+  size: 3
+  maxSize: 8
 
   # This doesn't matter so much in interactive mode, tasks specified with the job
   # 12 * 64
