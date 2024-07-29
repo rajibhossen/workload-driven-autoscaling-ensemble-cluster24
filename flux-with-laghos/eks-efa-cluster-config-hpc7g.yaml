@@ -33,7 +33,7 @@ managedNodeGroups:
     instanceType: hpc7g.16xlarge
     minSize: 2
     maxSize: 64
-    desiredCapacity: 64
+    desiredCapacity: 8
     efaEnabled: true
     placement:
       groupName: eks-efa-testing

@@ -10,14 +10,14 @@ eksctl create cluster -f eks-efa-cluster-config-hpc7g.yaml
 
 Deploy the flux operator
 ```console
-kubectl apply -f flux-with-amg-setup/hpc7g-configs/flux-operator-refactor-arm.yaml
+kubectl apply -f flux-operator-refactor-arm.yaml
 ```
 
 Crate a namespace for the miniCluster. Provide appropriate size in the `size` field. Populate `maxSize` field in the minicluster
 and provide a larger value to enable HPA to increase pods. 
 ```console
 kubectl create namespace flux-operator
-kubectl apply -f minicluster-amg.yaml
+kubectl apply -f minicluster-kripke.yaml
 ```
 
 ### Horizontal Pod Autoscaling and Cluster Autoscaling
@@ -25,16 +25,17 @@ Deploy horizontal pod autoscaling by following the [readme](../horizontal-pod-au
 
 Deploy Cluster Autoscaling by following the [readme](../cluster-autoscaler/README.md) of cluster-autoscaler directory. 
 
+
+### Application and run scripts
+
 Put flux main broker pod id into a variable. 
 ```console
 POD=$(kubectl get pods -n flux-operator -o json | jq -r .items[0].metadata.name)
 ```
 
-### Application and run scripts
-
 Copy run script that will submit ensemble application in Flux.
 ```console
-kubectl cp -n flux-operator run-experiments-amg.py ${POD}:/home/flux/run-experiments.py -c flux-sample
+kubectl cp -n flux-operator scripts/run-experiments-kripke.py ${POD}:/opt/Kripke/run-experiments.py -c flux-sample
 ```
 
 Now exec into the flux broker pod
@@ -49,25 +50,17 @@ flux proxy $fluxsocket bash
 flux resource list
 ```
 
-Numpy is required to run dynamic size experiment. To Install numpy with python3.10, at first install latest pip and then install numpy
-```pycon
-curl -sS https://bootstrap.pypa.io/get-pip.py | python3.10
-python3.10 -m pip install scipy
-```
-
-Test run
+Test Run
 ```console
-flux submit  -N 8 -n 512 --quiet -opmi=pmix --watch -vvv amg -P 16 8 4 -n 160 145 75
+flux submit -N 8 -n 512 --quiet -c 1 -o cpu-affinity=per-task --watch -vvv kripke --groups 500 --zones 64,64,64 --procs 16,8,4
+```
+To run the launcher program to run jobs/ensemble workflows
+```console
+python3 run-experiments.py --outdir /home --workdir /opt/Kripke --times 20 -N 8 --tasks 512 kripke --groups 500 --zones 64,64,64 --procs 16,8,4
 ```
 
-Run the launcher program to run ensemble workflows with chosen parameters
-static job size
+Collect experiment data from kubernetes pods
 ```
-python3 run-experiments.py --outdir /home/ --workdir /home/flux/ --times 20 -N 8 --tasks 512 amg -P 16 8 4 -n 160 145 70
+for i in $(seq 0 19); do kubectl cp flux-sample-0-gfh5p:/home/flux/kripke-$i-info.json flux-with-kripke/datasets/experiment-name-no/kripke-$i-info.json -c flux-sample; done
+for i in $(seq 0 19); do kubectl cp flux-sample-0-ktggz:/home/flux/kripke-$i.log flux-with-kripke/datasets/experiment-name-no/kripke-$i.log -c flux-sample; done
 ```
-
-Get each job information from the main broker pod
-```
-for i in $(seq 0 19); do kubectl cp -n flux-operator flux-sample-0-gfh5p:/home/flux/amg-$i-info.json /datasets/experiment-name-no/amg-$i-info.json -c flux-sample; done
-```
-Follow this [link](https://github.com/converged-computing/operator-experiments/tree/main/aws/lammps/hpc7g/run2) for more information. @

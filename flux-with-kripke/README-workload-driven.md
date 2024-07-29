@@ -1,4 +1,4 @@
-# Static Setup with Flux and Laghos
+# Workload Driven Autoscaling Setup with Flux and Kripke
 Workload-Driven Autoscaling means we will deploy the cluster with 8 instance and we will utilize workload-driven autoscaling algorithm
 to have autoscaling of flux pods and cluster autoscaling.
 
@@ -18,10 +18,10 @@ Crate a namespace for the miniCluster. Provide appropriate size in the `size` fi
 and provide a larger value to enable workload-driven autoscaling to make changes. 
 ```console
 kubectl create namespace flux-operator
-kubectl apply -f minicluster-laghos.yaml
+kubectl apply -f minicluster-kripke.yaml
 ```
 
-### Application and run scripts
+### Application setup scripts
 
 Put flux main broker pod id into a variable. 
 ```console
@@ -30,7 +30,7 @@ POD=$(kubectl get pods -n flux-operator -o json | jq -r .items[0].metadata.name)
 
 Copy run script with workload driven algorithm that will submit ensemble application in Flux and provide cluster autoscaling node count. 
 ```console
-kubectl cp -n flux-operator scripts/run-experiments-laghos-workload-auto.py ${POD}:/opt/laghos/run-experiments.py -c flux-sample
+kubectl cp -n flux-operator run-experiments-workload-driven.py ${POD}:/opt/Kripke/run-experiments.py -c flux-sample
 ```
 
 Now exec into the flux broker pod
@@ -56,17 +56,20 @@ To run the workload-driven autoscaling
 - Make appropriate changes (yaml file location of MiniCluster in the workload-driven agent mentioned above)
 - Change the pod name and number in the file
 - Run the agent using `python3 action-agent.py`
+- Run another script to collect pods, container timings in a separate terminal - `python3.10 scripts/application_ca_hpa_metrics.py --outdir <>`
+- 
+### Ensemble Application Run
 
-Test run
+Test Run
 ```console
-flux submit -N 8 -n 512 --quiet -c 1 -o cpu-affinity=per-task --watch -vvv /opt/laghos/laghos -pa -p 1 -tf 0.6 -pt 211 -m data/cube_211_hex.mesh --ode-solver 7 --max-steps 160 --cg-tol 0 -cgm 50 -ok 3 -ot 2 -rs 4 -rp 1
+flux submit -N 8 -n 512 --quiet -c 1 -o cpu-affinity=per-task --watch -vvv kripke --groups 500 --zones 64,64,64 --procs 16,8,4
 ```
 To run the launcher program to run jobs/ensemble workflows
 ```console
-python3 run-experiments.py --outdir /home/ --workdir /opt/laghos/ --times 20 -N 8 --tasks 512 /opt/laghos/laghos -pa -p 1 -tf 0.6 -pt 211 -m data/cube_211_hex.mesh --ode-solver 7 --max-steps 160 --cg-tol 0 -cgm 50 -ok 3 -ot 2 -rs 4 -rp 1
+python3 run-experiments.py --outdir /home --workdir /opt/Kripke --times 20 -N 8 --tasks 512 kripke --groups 500 --zones 64,64,64 --procs 16,8,4
 ```
 
 Collect experiment data from kubernetes pods
 ```
-for i in $(seq 0 19); do kubectl cp -n flux-operator flux-sample-0-mb977:/home/laghos-$i-info.json datasets/workload-driven-2/laghos-$i-info.json -c flux-sample; done
+for i in $(seq 0 19); do kubectl cp flux-sample-0-gfh5p:/home/kripke-$i-info.json flux-with-kripke/datasets/experiment-name-no/kripke-$i-info.json -c flux-sample; done
 ```

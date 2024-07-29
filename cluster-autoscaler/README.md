@@ -6,7 +6,7 @@ python3 create-delete-k8s-cluster.py --min-node-count 1 --max-node-count 3 --mac
 ```
 or
 ```console
-eksctl create cluster -f flux-with-lammps-setup/hpc7g-configs/eks-efa-cluster-config-hpc7g.yaml
+eksctl create cluster -f flux-with-{lammps/amg/kripke/laghos}/eks-efa-cluster-config-hpc7g.yaml
 ```
 
 Note: the eksctl yaml script will create everything needed for cluster autoscaling. So, if you creates the cluster with eksctl, skip the steps below and directly apply the cluster autoscaler.
@@ -59,10 +59,10 @@ metadata:
 labels:
     k8s-addon: cluster-autoscaler.addons.k8s.io
     k8s-app: cluster-autoscaler
-  annotations:
+    annotations:
     eks.amazonaws.com/role-arn: arn:aws:iam::<account-id>:role/AmazonEKSClusterAutoscalerRole
-  name: cluster-autoscaler
-  namespace: kube-system
+    name: cluster-autoscaler
+    namespace: kube-system
 ---
 ```
 ### Deploy the autoscaler

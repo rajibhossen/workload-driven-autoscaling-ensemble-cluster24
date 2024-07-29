@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from kubernetes import client as k8s
 from kubernetes import config, watch
 
-import kubescaler.utils as utils
+import utils
 
 # Save data here
 here = os.path.dirname(os.path.abspath(__file__))

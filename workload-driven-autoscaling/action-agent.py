@@ -1,3 +1,6 @@
+import subprocess
+import time
+
 import yaml
 from kubernetes import client, config, utils
 import kubernetes
@@ -32,5 +35,42 @@ def perform_scaling_operation(filename):
         apply_simple_item(dynamic_client=DYNAMIC_CLIENT, manifest=yaml_file, verbose=True)
 
 
-utils.change_minicluster_size(filename='minicluster-libfabric-new-custom-metrics.yaml', value=3)
-perform_scaling_operation(filename="minicluster-libfabric-new-custom-metrics.yaml")
+def get_current_node_count():
+    # subprocess.run(['kubectl', 'cp', '-n', 'flux-operator', 'flux-sample-0-2dn29:/opt/laghos/node_counts.txt',
+    #                 'current_node_count.txt', '-c', 'flux-sample'])
+    subprocess.run(['kubectl', 'cp', '-n', 'flux-operator', 'flux-sample-0-fnlsd:/opt/Kripke/node_counts.txt',
+                    'current_node_count.txt', '-c', 'flux-sample'])
+    # subprocess.run(['kubectl', 'cp', '-n', 'flux-operator', 'flux-sample-0-2dn29:/opt/laghos/node_counts.txt',
+    #                 'current_node_count.txt', '-c', 'flux-sample'])
+    # subprocess.run(['kubectl', 'cp', '-n', 'flux-operator', 'flux-sample-0-2dn29:/opt/laghos/node_counts.txt',
+    #                 'current_node_count.txt', '-c', 'flux-sample'])
+
+    with open('current_node_count.txt', 'r') as f:
+        current_node = f.read()
+        return current_node
+
+
+if __name__ == '__main__':
+    prev_count = None
+    # yaml_filename = '../flux-with-laghos/minicluster-laghos.yaml'
+    # yaml_filename = '../flux-with-lammps/minicluster-lammps.yaml'
+    # yaml_filename = '../flux-with-amg/minicluster-amg.yaml'
+    yaml_filename = '../flux-with-kripke/minicluster-kripke.yaml'
+
+    while True:
+        current_node = get_current_node_count()
+
+        if int(current_node) == -500:
+            print("Experiment complete")
+            break
+
+        print("Received Current Node Count - ", current_node)
+        if not prev_count or current_node > prev_count:
+            print('Applying changes')
+            # Changing size parameter in minicluster yaml
+            utils.change_minicluster_size(filename=yaml_filename, value=int(current_node))
+            # Applying the minicluster yaml using kubernetes API
+            # perform_scaling_operation(filename=yaml_filename)
+            prev_count = current_node
+        print("Waiting...")
+        time.sleep(128)  # Application median runtime

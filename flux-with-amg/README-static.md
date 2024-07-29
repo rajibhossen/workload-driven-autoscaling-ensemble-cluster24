@@ -1,5 +1,5 @@
-# Static Setup with Flux and AMG
-Static cluster means we will deploy the cluster with predefined instance number(8, 16, 32, 64) and we will not enable autoscaling. LAMMPS requires EFA enabled networking and a specific placement group.
+# Static Setup with Flux and Laghos
+Static cluster means we will deploy the cluster with predefined instance number(8, 16, 32, 64) and we will not enable autoscaling.
 
 We will need to setup a kubernetes cluster in aws that will have necessary supports to run an application specifically LAMMPS.
 For example, AMG requires EFA enabled networking and a specific placement group.
@@ -11,13 +11,13 @@ eksctl create cluster -f eks-efa-cluster-config-hpc7g.yaml
 ```
 Deploy the flux operator
 ```console
-kubectl apply -f flux-with-amg-setup/hpc7g-configs/flux-operator-refactor-arm.yaml
+kubectl apply -f flux-operator-refactor-arm.yaml
 ```
 
 Crate a namespace for the miniCluster. Provide appropriate size in the `size` field. 
 ```console
 kubectl create namespace flux-operator
-kubectl apply -f flux-with-amg-setup/hpc7g-configs/minicluster-no-view.yaml
+kubectl apply -f minicluster-amg.yaml
 ```
 
 Put flux main broker pod id into a variable. 
@@ -28,7 +28,6 @@ POD=$(kubectl get pods -n flux-operator -o json | jq -r .items[0].metadata.name)
 Copy run script that will submit ensemble application in Flux.
 ```console
 kubectl cp -n flux-operator run-experiments-amg.py ${POD}:/home/flux/examples/reaxff/HNS/run-experiments.py -c flux-sample
-kubectl cp -n flux-operator scripts/run-experiments-amg-dynamic-size.py ${POD}:/home/flux/examples/reaxff/HNS/run-experiments.py -c flux-sample
 ```
 
 Now exec into the flux broker pod
@@ -43,12 +42,6 @@ flux proxy $fluxsocket bash
 flux resource list
 ```
 
-Numpy is required to run dynamic size experiment. To Install numpy with python3.10, at first install latest pip and then install numpy
-```pycon
-curl -sS https://bootstrap.pypa.io/get-pip.py | python3.10
-python3.10 -m pip install scipy
-```
-
 To run the launcher program to run jobs/ensemble workflows
 ```console
 flux submit  -N 8 -n 512 --quiet -opmi=pmix --watch -vvv amg -P 16 8 4 -n 160 145 75
@@ -56,15 +49,10 @@ flux submit  -N 2 -n 128 --quiet -opmi=pmix --watch -vvv amg -P 16 4 2 -n 160 16
 # flux mini submit  -N 8 -n 512 --quiet -ompi=openmpi@5 -c 1 -o cpu-affinity=per-task --watch -vvv lmp -v x 1 -v y 1 -v z 1 -in in.reaxc.hns -nocite
 
 python3 run-experiments.py --outdir /home/flux --workdir /opt/lammps/examples/reaxff/HNS --times 20 -N 8 --tasks 512 lmp -v x 64 -v y 16 -v z 16 -in in.reaxc.hns -nocite
-python3 run-experiments-dynamic-size.py --outdir /home/flux --workdir /opt/lammps/examples/reaxff/HNS --times 20 -N 8 --tasks 512 -in in.reaxc.hns -nocite
 ```
-static job size
+static job parameters for all jobs
 ```
 python3 run-experiments.py --outdir /home/flux --workdir /home/flux/examples/reaxff/HNS --times 20 -N 8 --tasks 512 amg -P 16 8 4 -n 160 145 70
-```
-dynamic job size
-```
-python3.10 run-experiments.py --outdir /home/flux --workdir /home/flux/examples/reaxff/HNS --times 20 -N 8 --tasks 512
 ```
 
 ```

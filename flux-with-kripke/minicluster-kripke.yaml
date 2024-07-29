@@ -2,10 +2,10 @@ apiVersion: flux-framework.org/v1alpha2
 kind: MiniCluster
 metadata:
   name: flux-sample
-  # namespace: flux-operator
+  namespace: flux-operator
 spec:
   # Number of pods to create for MiniCluster
-  size: 2
+  size: -2428
   maxSize: 64
 
   interactive: true
@@ -19,11 +19,9 @@ spec:
 
   # This is a list because a pod can support multiple containers
   containers:
-    # This container has lammps AND flux.
+    # This container has Kripke AND flux.
     - image: ghcr.io/converged-computing/metric-kripke-cpu:hpc7g
 
-      # You can set the working directory if your container WORKDIR is not correct.
-      # workingDir: /home/flux/examples/reaxff/HNS
       resources:
         limits:
           memory: "110G"

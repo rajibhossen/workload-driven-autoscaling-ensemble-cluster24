@@ -6,17 +6,12 @@ import re
 import shutil
 import stat
 import tempfile
-from contextlib import contextmanager
-
-from kubescaler.logger import logger
 
 try:
     from ruamel_yaml import YAML
 except ImportError:
     from ruamel.yaml import YAML
 
-
-@contextmanager
 def workdir(dirname):
     """
     Provide context for a working directory, e.g.,
@@ -118,8 +113,8 @@ def get_file_hash(image_path, algorithm="sha256"):
     try:
         hasher = getattr(hashlib, algorithm)()
     except AttributeError:
-        logger.error("%s is an invalid algorithm.")
-        logger.exit(" ".join(hashlib.algorithms_guaranteed))
+        print("%s is an invalid algorithm.")
+        print(" ".join(hashlib.algorithms_guaranteed))
 
     with open(image_path, "rb") as f:
         for chunk in iter(lambda: f.read(4096), b""):

@@ -96,48 +96,6 @@ def get_info(jobid):
     return jobinfo
 
 
-def get_queue_metrics():
-    jobs = flux.job.job_list(handle)
-    listing = jobs.get()
-    # print(listing)
-    pending_jobs = 0
-    for jobs in listing["jobs"]:
-        payload = {"id": jobs["id"], "attrs": ["all"]}
-        rpc = flux.job.list.JobListIdRPC(handle, "job-list.list-id", payload)
-        try:
-            jobinfo = rpc.get()
-        # The job does not exist, assume completed
-        except FileNotFoundError:
-            return "INACTIVE"
-
-        jobinfo = jobinfo["job"]
-        state = jobinfo["state"]
-        if state == 8:
-            pending_jobs += 1
-
-    return pending_jobs
-
-
-def calculate_node_count():
-    job_runtime = 180  # 120 seconds on average
-    estimated_node_uptime = 250  # in seconds from aws to kubernetes
-    max_allowable_nodes = 48
-    current_node_counts = 8
-    jobs_in_queue = get_queue_metrics()
-
-    print(f"Total jobs in the queue - {jobs_in_queue}")
-
-    # estimated_total_job_runtime = job_runtime * jobs_in_queue
-
-    adjusted_jobs = jobs_in_queue - math.ceil(estimated_node_uptime / job_runtime)
-
-    new_nodes = adjusted_jobs * current_node_counts - current_node_counts
-
-    if new_nodes > max_allowable_nodes:
-        print(f"Calculated nodes are - {max_allowable_nodes}")
-    else:
-        print(f"Calculated nodes are - {new_nodes}")
-
 
 def main():
     parser = get_parser()
@@ -216,9 +174,6 @@ def main():
     print("\n⭐️ Waiting for jobs to finish...")
     print(f"Job ID's are - {jobs} \n")
     for i, jobid in enumerate(jobs):
-        # calculate node count for semi autoscaling
-
-        calculate_node_count()
 
         state = "RUN"
         while state == "RUN":
@@ -240,6 +195,7 @@ def main():
         outfile = f"{prefix}-info.json"
         with open(outfile, "w") as fd:
             fd.write(json.dumps(info, indent=4))
+
     print("Jobs are complete, goodbye! 👋️")
 
 

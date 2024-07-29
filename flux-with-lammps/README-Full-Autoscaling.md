@@ -1,10 +1,8 @@
-# Setup Static Experiments with Flux and LAMMPS
-Static cluster means we will deploy the cluster with predefined instance number(8, 16, 32, 64) and we will not enable autoscaling. LAMMPS requires EFA enabled networking and a specific placement group.
-
-Note: EFA plugin installation failed with eksctl latest version. So, the current tested and working version is eksctl v0.168.0.
+# Full Autoscaling Experiments with Flux and LAMMPS
+Full Autoscaling means we will deploy the cluster with 8 instance and we will enable horizontal pod autoscaling and cluster autoscaling. 
 
 Deploy the EKS cluster using the below command for each application. 
-Make sure you provided appropriate number in the `managedNodeGroups` `desiredCapacity` field. 
+Make sure you provided `8` in the `managedNodeGroups` `desiredCapacity` field, and a relatively larger number in `maxSize` field for horizontal pod autoscaling to work. 
 
 ```console
 eksctl create cluster -f eks-efa-cluster-config-hpc7g.yaml
@@ -15,12 +13,19 @@ Now, install flux operator in the cluster.
 kubectl apply -f flux-operator-arm.yaml
 ```
 
-Crate a namespace for the miniCluster. Provide appropriate size in the `size` field. 
+Crate a namespace for the miniCluster. Provide appropriate size in the `size` field. Populate `maxSize` field in the minicluster
+and provide a larger value to enable HPA to increase pods. 
 ```console
 kubectl create namespace flux-operator
 kubectl apply -f minicluster-lammps.yaml
 ```
 
+### Horizontal Pod Autoscaling and Cluster Autoscaling
+Deploy horizontal pod autoscaling by following the [readme](../horizontal-pod-autoscaling/README.md) of horizontal-pod-autoscaling directory.
+
+Deploy Cluster Autoscaling by following the [readme](../cluster-autoscaler/README.md) of cluster-autoscaler directory. 
+
+### Application and run scripts
 Copy run script that will submit ensemble application in Flux.
 ```console
 POD=$(kubectl get pods -n flux-operator -o json | jq -r .items[0].metadata.name)
@@ -77,6 +82,11 @@ python3 run-experiments.py --outdir /home/flux --workdir /opt/lammps/examples/re
 To run ensemble workflows with dynamic job parameters and fixed resources. 
 ```console
 python3 run-experiments-dynamic-size.py --outdir /home/flux --workdir /opt/lammps/examples/reaxff/HNS --times 20 -N 8 --tasks 512 -in in.reaxc.hns -nocite
+```
+
+Get each job information from the main broker pod
+```console
+for i in $(seq 0 19); do kubectl cp -n flux-operator flux-sample-0-74zsh:/home/flux/lammps-$i-info.json flux-with-lammps/datasets/experiment-no/lammps-$i-info.json -c flux-sample; done
 ```
 
 Follow this [link](https://github.com/converged-computing/operator-experiments/tree/main/aws/lammps/hpc7g/run2) for more information. @

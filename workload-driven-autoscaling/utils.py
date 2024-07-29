@@ -13,4 +13,5 @@ def change_minicluster_size(filename, value):
     with open(filename, 'w') as file:
         file.write(filedata)
 
+    print("Updated Size: ", value)
     print("Done writing")

@@ -1,4 +1,4 @@
-# Static Setup with Flux and AMG
+README-full-automatic.md# Static Setup with Flux and AMG
 Full Autoscaling means we will deploy the cluster with 8 instance and we will enable horizontal pod autoscaling and cluster autoscaling.
 
 Deploy the EKS cluster using the below command for each application. 
@@ -20,12 +20,6 @@ kubectl create namespace flux-operator
 kubectl apply -f minicluster-amg.yaml
 ```
 
-### Horizontal Pod Autoscaling and Cluster Autoscaling
-Deploy horizontal pod autoscaling by following the [readme](../horizontal-pod-autoscaling/README.md) of horizontal-pod-autoscaling directory.
-
-Deploy Cluster Autoscaling by following the [readme](../cluster-autoscaler/README.md) of cluster-autoscaler directory. 
-
-
 ### Application and run scripts
 
 Put flux main broker pod id into a variable. 
@@ -35,7 +29,7 @@ POD=$(kubectl get pods -n flux-operator -o json | jq -r .items[0].metadata.name)
 
 Copy run script that will submit ensemble application in Flux.
 ```console
-kubectl cp -n flux-operator run-experiments-amg.py ${POD}:/home/flux/run-experiments.py -c flux-sample
+kubectl cp -n flux-operator run-experiments-workload-driven.py ${POD}:/home/flux/run-experiments.py -c flux-sample
 ```
 
 Now exec into the flux broker pod
@@ -50,11 +44,17 @@ flux proxy $fluxsocket bash
 flux resource list
 ```
 
-Numpy is required to run dynamic size experiment. To Install numpy with python3.10, at first install latest pip and then install numpy
-```pycon
-curl -sS https://bootstrap.pypa.io/get-pip.py | python3.10
-python3.10 -m pip install scipy
-```
+### Workload-Driven Autoscaling and Cluster Autoscaling
+Use a separate terminal to - 
+
+Deploy Cluster Autoscaling by following the [readme](../cluster-autoscaler/README.md) of cluster-autoscaler directory. 
+
+For workload-driven autoscaling, the file - [workload-driven agent](../workload-driven-autoscaling/action-agent.py) is responsible for syncing with the cluster
+and applying changes. We implemented the algorithm in the run-scirpts - [workload-driven algorithm](run-experiments-laghos-worload-driven.py).
+To run the workload-driven autoscaling
+- Make appropriate changes (yaml file location of MiniCluster in the workload-driven agent mentioned above)
+- Run the agent using `python3 action-agent.py`
+
 
 Test run
 ```console
@@ -71,4 +71,3 @@ Get each job information from the main broker pod
 ```
 for i in $(seq 0 19); do kubectl cp -n flux-operator flux-sample-0-gfh5p:/home/flux/amg-$i-info.json /datasets/experiment-name-no/amg-$i-info.json -c flux-sample; done
 ```
-Follow this [link](https://github.com/converged-computing/operator-experiments/tree/main/aws/lammps/hpc7g/run2) for more information. @

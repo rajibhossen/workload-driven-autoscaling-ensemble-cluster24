@@ -2,7 +2,7 @@ import subprocess
 from kubernetes import client, config
 
 
-class CustomMetrics():
+class CustomMetrics:
     def __init__(self):
         self.api_client = None
         self.group = "custom.metrics.k8s.io"
@@ -26,6 +26,8 @@ class CustomMetrics():
 
     def get_node_up_count(self):
         return self.endpoint_url('node_up_count')
+
+
 
 # Usage
 # metric_server = CustomMetrics()

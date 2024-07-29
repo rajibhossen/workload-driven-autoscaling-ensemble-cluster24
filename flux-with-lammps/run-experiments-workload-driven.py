@@ -134,10 +134,9 @@ def calculate_node_count():
             current_nodes += 1
 
         if (current_nodes * current_node_counts) > max_allowable_nodes:
-            print(f"Calculated nodes are - {int(max_allowable_nodes/current_node_counts)}")
+            print(f"Calculated nodes are - {int(max_allowable_nodes / current_node_counts)}")
         else:
             print(f"Calculated nodes are - {current_nodes}")
-
 
 
 def main():
@@ -183,22 +182,22 @@ def main():
         outfile = f"{prefix}.log"
 
         flux_command = (
-            [
-                "flux",
-                # The flux in the container is 0.44.0
-                "mini",
-                "submit",
-                "-N",
-                str(args.N),
-                "-n",
-                str(args.tasks),
-                "--output",
-                outfile,
-                "--error",
-                outfile,
-            ]
-            + flux_options
-            + command
+                [
+                    "flux",
+                    # The flux in the container is 0.44.0
+                    "mini",
+                    "submit",
+                    "-N",
+                    str(args.N),
+                    "-n",
+                    str(args.tasks),
+                    "--output",
+                    outfile,
+                    "--error",
+                    outfile,
+                ]
+                + flux_options
+                + command
         )
 
         # If doing a dry run, stop here

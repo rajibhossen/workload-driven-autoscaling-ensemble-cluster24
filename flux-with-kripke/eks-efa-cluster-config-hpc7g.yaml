@@ -2,7 +2,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: hossen1-cluster-2
+  name: hossen1-cluster-8
   region: us-east-1
   version: "1.27"
 
@@ -28,21 +28,21 @@ iam:
 
 availabilityZones: ["us-east-1a", "us-east-1b"]
 managedNodeGroups:
-  - name: hossen1-cluster-2
+  - name: hossen1-cluster-8
     availabilityZones: ["us-east-1a"]
     instanceType: hpc7g.16xlarge
     minSize: 2
     maxSize: 64
-    desiredCapacity: 2
+    desiredCapacity: 8
     efaEnabled: true
     placement:
       groupName: eks-efa-testing
     labels: { "flux-operator": "true" }
     tags:
-      kubernetes.io/cluster/hossen1-cluster-2: "owned"
+      kubernetes.io/cluster/hossen1-cluster-8: "owned"
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/scaling-study-efa: "owned"
-      Name: 'hossen1-cluster-2'
+      Name: 'hossen1-cluster-8'
     propagateASGTags: true
     ssh:
       allow: true
