@@ -1,0 +1,72 @@
+apiVersion: flux-framework.org/v1alpha2
+kind: MiniCluster
+metadata:
+  name: flux-sample
+  namespace: flux-operator
+spec:
+  # Number of pods to create for MiniCluster
+  size: 8
+  maxSize: 64
+
+  interactive: true
+  logging:
+    quiet: false
+
+  # Disable view means that we don't expect the init container to have flux
+  # We do, however, use it still to generate our needed configs!
+  # This means your application container needs flux, and the startup is faster
+  flux:
+    container:
+      image: ubuntu:focal
+      disable: true
+
+  # This is a list because a pod can support multiple containers
+  containers:
+    # This container has lammps AND flux.
+    - image: ghcr.io/rajibhossen/amg-2023-arm-no-view:v2
+
+      # You can set the working directory if your container WORKDIR is not correct.
+      workingDir: /home/flux/examples/reaxff/HNS
+      resources:
+        limits:
+          memory: "110G"
+          cpu: "62"
+        requests:
+          memory: "110G"
+          cpu: "62"
+
+      commands:
+        init: |
+          . /etc/profile.d/z10_spack_environment.sh
+          env | grep PATH
+#        workerPre: sleep 60
+#        pre: |
+#          source /etc/profile.d/z10_spack_environment.sh
+#          asFlux="sudo -u flux -E PYTHONPATH=$PYTHONPATH -E PATH=$PATH -E FI_PROVIDER=efa -E OMPI_MCA_btl=self,ofi -E RDMAV_FORK_SAFE=1 -E FI_EFA_USE_DEVICE_RDMA=1"
+#          . /etc/profile.d/z10_spack_environment.sh
+#          cd /opt/spack-environment
+#          . /opt/spack-environment/spack/share/spack/setup-env.sh
+#          spack env activate .
+#          cd /home/flux/examples/reaxff/HNS
+      # command: lmp -v x 2 -v y 2 -v z 2 -in in.reaxc.hns -nocite
+#    - image: ubuntu:jammy
+#      name: metrics
+#      commands:
+#        post: |
+#          if [[ ${JOB_COMPLETION_INDEX} -eq 0 ]]; then
+#            echo "We are in the loop"
+#            apt-get update && apt-get install -y git
+#            # Finalize the view so we can use Python (not default for a sidecar)
+#            cp -R /mnt/flux/software /opt/software
+#            git clone https://github.com/converged-computing/flux-metrics-api /opt/metrics-api
+#            cd /opt/metrics-api
+#            source /mnt/flux/flux-view.sh
+#            /mnt/flux/view/bin/python3.11 -m ensurepip
+#            /mnt/flux/view/bin/python3.11 -m pip install .
+#            export FLUX_URI=$fluxsocket
+#            unset LD_LIBRARY_PATH PYTHONPATH
+#            flux-metrics-api start --port 5000 --namespace default --host 0.0.0.0
+#          else
+#             echo "Looping infinitely"
+#             sleep infinity
+#          fi
