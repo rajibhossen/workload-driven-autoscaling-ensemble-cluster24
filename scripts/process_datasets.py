@@ -34,8 +34,8 @@ def total_time(path_to_json):
 if __name__ == '__main__':
 
     runtimes = []
-    for i in range(3):
-        path_to_json = "/Users/hossen/Projects/flux-k8s-scaler/flux-with-laghos/datasets/no-scaling-8node-" + str(i + 1) + "/"
+    for i in range(5):
+        path_to_json = "/Users/hossen/Projects/flux-k8s-scaler/flux-with-amg/datasets/fixed-ensemble-no-scaling-size-32-160x145x70-" + str(i + 1) + "/"
         total = total_time(path_to_json)
         print(total)
         runtimes.append(total)

@@ -1,0 +1,36 @@
+apiVersion: flux-framework.org/v1alpha2
+kind: MiniCluster
+metadata:
+  name: flux-sample
+  namespace: flux-operator
+spec:
+  # Number of pods to create for MiniCluster
+  size: 8
+  maxSize: 64
+
+  interactive: true
+  logging:
+    quiet: false
+
+  flux:
+    container:
+      image: ubuntu:focal
+      disable: true
+
+  # This is a list because a pod can support multiple containers
+  containers:
+    # This container has Kripke AND flux.
+    - image: ghcr.io/converged-computing/metric-kripke-cpu:hpc7g
+
+      resources:
+        limits:
+          memory: "110G"
+          cpu: "62"
+        requests:
+          memory: "110G"
+          cpu: "62"
+
+      commands:
+        init: |
+          . /etc/profile.d/z10_spack_environment.sh
+          env | grep PATH

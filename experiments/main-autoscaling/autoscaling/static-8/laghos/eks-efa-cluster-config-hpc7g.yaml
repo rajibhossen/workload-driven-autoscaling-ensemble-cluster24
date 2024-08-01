@@ -1,0 +1,30 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: autoscaling_static_8
+  region: us-east-1
+  version: "1.27"
+
+
+availabilityZones: ["us-east-1a", "us-east-1b"]
+managedNodeGroups:
+  - name: autoscaling_static_8
+    availabilityZones: ["us-east-1a"]
+    instanceType: hpc7g.16xlarge
+    minSize: 2
+    maxSize: 8
+    desiredCapacity: 8
+    efaEnabled: true
+    placement:
+      groupName: eks-efa-testing
+    labels: { "flux-operator": "true" }
+    tags:
+      kubernetes.io/cluster/autoscaling_static_8: "owned"
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/scaling-study-efa: "owned"
+      Name: 'autoscaling_static_8'
+    propagateASGTags: true
+    ssh:
+      allow: true
+      publicKeyPath: ~/.ssh/id_rsa.pub

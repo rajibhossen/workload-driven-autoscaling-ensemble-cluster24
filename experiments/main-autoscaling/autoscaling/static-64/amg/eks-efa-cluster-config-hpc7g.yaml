@@ -1,0 +1,30 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: autoscaling_static_64_amg
+  region: us-east-1
+  version: "1.27"
+
+
+availabilityZones: ["us-east-1a", "us-east-1b"]
+managedNodeGroups:
+  - name: autoscaling_static_64_amg
+    availabilityZones: ["us-east-1a"]
+    instanceType: hpc7g.16xlarge
+    minSize: 2
+    maxSize: 64
+    desiredCapacity: 64
+    efaEnabled: true
+    placement:
+      groupName: eks-efa-testing
+    labels: { "flux-operator": "true" }
+    tags:
+      kubernetes.io/cluster/autoscaling_static_64_amg: "owned"
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/scaling-study-efa: "owned"
+      Name: 'autoscaling_static_64_amg'
+    propagateASGTags: true
+    ssh:
+      allow: true
+      publicKeyPath: ~/.ssh/id_rsa.pub
