@@ -11,6 +11,7 @@ Directories
   - [autoscaling](datasets/autoscaling-studies) - Contains datasets of all autoscaling strategies with all applications
   - [horizontal pod autoscaling](datasets/horizontal-pod-autoscaling-simulation) - Simulation data for horizontal pod autoscaling 
   - [scaling](datasets/scaling) - Contains datasets for experiments conducted by kubescaler. 
+- [setup](setup) - This directory contains the instructions to setup horizontal pod autoscaling and cluster autoscaling. These are for standalone setup. We provided setup instructions for these with each experiments. 
 
 
 
