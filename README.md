@@ -1,29 +1,13 @@
 # Study autoscaling for MPI-based ensemble applications
-Summary of experiments 
-
-EKS cluster creation
-```console
-eksctl create cluster -f 
-```
-
-### Autoscaling Study 
-
-Applications Utilized 
-- LAMMPS
-- AMG
-- Kripke
-- Laghos
-
-Strategies
-- Static with various instance numbers (8, 16, 32, 64)
-- Fully automatic autoscaling (Horizontal pod autoscaling + cluster autoscaling)
-- Workload-Driven Autoscaling
+This repository includes code and data for experiments published in [Cluster Computing 2024](https://clustercomp.org/2024/papers/) Conference. 
+The title of the paper is "Enabling Workload-Driven Elasticity in MPI-based Ensembles" with DOI - 
 
 
-#### Experiments
-- Comparison of autoscaling strategies with four application in fixed ensemble jobs (20 members)
-- Comparison of autoscaling strategies with AMG application in variable ensemble jobs (20 members)
-- Comparison of autoscaling strategies with AMG application in Large ensemble jobs (100 members)
-- Comparison of workload-driven and fully automatic strategies with AMG application with downsizing enabled and fixed ensemble jobs (20 members)
-- Scale out by increments of various sizes to study scale-out policy
-- Study timings of cluster creation and deletion components, facilitated by Kubescaler
+Directories
+- [Experiments](experiments/) - This directory contains the code, scripts, and configuration files for all the experiments
+  - [Experiments/autoscaling-studies](experiments/autoscaling-studies) - Contains instructions, code, and configuration for main autoscaling with various applications.
+    - [main autoscaling](experiments/autoscaling-studies/autoscaling) - The autoscaling of all strategies (static, fully automatic, workload-driven) for all applications
+    - [larger ensemble](experiments/autoscaling-studies/larger-ensemble) - The autoscaling of all strategies (static, fully automatic, workload-driven) with larger ensemble size (100 members)
+  - [Experiments/scaling](experiments/scaling) - Contains instructions for experiments ran with kubescaler
+- [Datasets](datasets/) - This directory contains the datasets of all experiments. 
+
