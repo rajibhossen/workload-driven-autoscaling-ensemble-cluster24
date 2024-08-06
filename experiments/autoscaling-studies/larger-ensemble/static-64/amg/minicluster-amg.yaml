@@ -1,0 +1,41 @@
+apiVersion: flux-framework.org/v1alpha2
+kind: MiniCluster
+metadata:
+  name: flux-sample
+  namespace: flux-operator
+spec:
+  # Number of pods to create for MiniCluster
+  size: 64
+  maxSize: 64
+
+  interactive: true
+  logging:
+    quiet: false
+
+  # Disable view means that we don't expect the init container to have flux
+  # We do, however, use it still to generate our needed configs!
+  # This means your application container needs flux, and the startup is faster
+  flux:
+    container:
+      image: ubuntu:focal
+      disable: true
+
+  # This is a list because a pod can support multiple containers
+  containers:
+    # This container has lammps AND flux.
+    - image: ghcr.io/rajibhossen/amg-2023-arm-no-view:v2
+
+      # You can set the working directory if your container WORKDIR is not correct.
+      workingDir: /home/
+      resources:
+        limits:
+          memory: "110G"
+          cpu: "62"
+        requests:
+          memory: "110G"
+          cpu: "62"
+
+      commands:
+        init: |
+          . /etc/profile.d/z10_spack_environment.sh
+          env | grep PATH
