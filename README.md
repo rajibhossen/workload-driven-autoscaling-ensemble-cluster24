@@ -1,17 +1,24 @@
 # Study autoscaling for MPI-based ensemble applications
+Summary of experiments 
 
-#### Applications Utilized 
+EKS cluster creation
+```console
+eksctl create cluster -f 
+```
+
+### Autoscaling Study 
+
+Applications Utilized 
 - LAMMPS
 - AMG
 - Kripke
 - Laghos
 
-#### Autoscaling Strategies
+Strategies
 - Static with various instance numbers (8, 16, 32, 64)
 - Fully automatic autoscaling (Horizontal pod autoscaling + cluster autoscaling)
 - Workload-Driven Autoscaling
 
-Setup instructions for each application are in the respective application directory named `flux-with-<application name>`
 
 #### Experiments
 - Comparison of autoscaling strategies with four application in fixed ensemble jobs (20 members)
