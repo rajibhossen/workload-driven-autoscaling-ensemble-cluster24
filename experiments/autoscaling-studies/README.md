@@ -22,3 +22,6 @@ Monitoring
 
 We also monitor various events and track timings in application environment such as pod schedule duration. Details are here [monitoring-and-tracking](monitoring-and-tracking-events).
 
+Horizontal Pod Autoscaling
+
+Simulated Horizontal pod autoscaling to identify the target cpu utilization. [This](horizontal-pod-autoscaling) contains the code for that. 
