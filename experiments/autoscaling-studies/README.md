@@ -1,27 +1,24 @@
+### Autoscaling studies with various strategies and applications 
+Here, we describe all the experiments for autoscaling.
 
-EKS cluster creation
-```console
-eksctl create cluster -f 
-```
-
-### Autoscaling Study 
-
-Applications Utilized 
+For the experiments, we have utilized the following applications -
 - LAMMPS
 - AMG
 - Kripke
 - Laghos
 
-Strategies
+Autoscaling Strategies
 - Static with various instance numbers (8, 16, 32, 64)
 - Fully automatic autoscaling (Horizontal pod autoscaling + cluster autoscaling)
 - Workload-Driven Autoscaling
 
+Experiments
+- [main autoscaling](autoscaling/) - Autoscaling strategies with four application in fixed ensemble jobs (20 members)
+- [variable ensemble](variable-ensemble) - Autoscaling strategies with AMG application in variable ensemble jobs (20 members)
+- [larger ensemble](larger-ensemble) - Autoscaling strategies with AMG application in Large ensemble jobs (100 members)
+- [workload driven with downsizing](autoscaling-with-downsizing)Workload-driven and fully automatic strategies with AMG application with downsizing enabled and fixed ensemble jobs (20 members)
 
-#### Experiments
-- Comparison of autoscaling strategies with four application in fixed ensemble jobs (20 members)
-- Comparison of autoscaling strategies with AMG application in variable ensemble jobs (20 members)
-- Comparison of autoscaling strategies with AMG application in Large ensemble jobs (100 members)
-- Comparison of workload-driven and fully automatic strategies with AMG application with downsizing enabled and fixed ensemble jobs (20 members)
-- Scale out by increments of various sizes to study scale-out policy
-- Study timings of cluster creation and deletion components, facilitated by Kubescaler
+Monitoring
+
+We also monitor various events and track timings in application environment such as pod schedule duration. Details are here [monitoring-and-tracking](monitoring-and-tracking-events).
+
