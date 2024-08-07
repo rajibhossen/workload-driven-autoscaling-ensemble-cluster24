@@ -13,5 +13,6 @@ Directories
   - [scaling](datasets/scaling) - Contains datasets for experiments conducted by kubescaler. 
 - [setup](setup) - This directory contains the instructions to setup horizontal pod autoscaling and cluster autoscaling. These are for standalone setup. We provided setup instructions for these with each experiments. 
 
+Please cite if you find it useful.
 
-
+**Hossen, M. R., Sochat, V., Sarkar, A., Islam, M., & Milroy, D. (2024). Repository for workload-driven autoscaling Cluster 2024 (0.0.0). IEEE Cluster conference (Cluster), Kobe, Japan. Zenodo. https://doi.org/10.5281/zenodo.13247408**

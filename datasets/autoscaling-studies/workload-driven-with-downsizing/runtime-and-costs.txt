@@ -1,0 +1,12 @@
+# Datasets for workload-driven autoscaling with downsizing enabled
+
+Strategy,Median Runtime (S)
+Workload-driven without downscaling,383.97
+Workload-driven with downscaling,382.37
+
+Runtime Cost
+Strategy,costs($)
+Workload-driven without downscaling,6.75
+Workload-driven with downscaling,5.51
+
+Non-Runtime cost($) - 4.49
